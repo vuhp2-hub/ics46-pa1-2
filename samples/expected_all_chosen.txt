@@ -1,0 +1,10 @@
+courses: 2
+total_meals (ignoring chosen): 4
+remaining_meals (given chosen): 1
+all_meals (dish per course, in course order):
+  1 0
+linear_search_index (unsorted): 0
+sorted_meals (reverse course order):
+  1 0
+merge_sort_matches_bubble: yes
+binary_search_index (sorted): 0

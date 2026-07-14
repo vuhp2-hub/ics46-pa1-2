@@ -1,0 +1,18 @@
+courses: 3
+total_meals (ignoring chosen): 4
+remaining_meals (given chosen): 4
+all_meals (dish per course, in course order):
+  0 0 0
+  0 0 1
+  0 1 0
+  0 1 1
+linear_search_index (unsorted): 3
+sorted_meals (reverse course order):
+  0 0 0
+  0 1 0
+  0 0 1
+  0 1 1
+merge_sort_matches_bubble: yes
+binary_search_index (sorted): 3
+product(f0,f1) scope: 0 1
+product(f0,f1) scores: 15 10
