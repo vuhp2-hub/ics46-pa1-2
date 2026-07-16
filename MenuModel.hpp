@@ -429,12 +429,15 @@ class Meal {
     // search; call sites use it as Meal::compareMeals(a, b, order, n).
     static int compareMeals(Meal const &a, Meal const &b,
                             Course const *courseSortOrder, int nCourses) {
-        // TODO: return a negative / zero / positive result per the ordering
+        // DONE: return a negative / zero / positive result per the ordering
         // described above.
-        (void)a;
-        (void)b;
-        (void)courseSortOrder;
-        (void)nCourses;
+
+        for (int i{0}; i < nCourses; ++i) {
+            int courseIdx = courseSortOrder[i].courseIdx;
+            int difference = a.dishFor(courseIdx) - b.dishFor(courseIdx);
+            if (difference != 0)
+                return difference;
+        }
         return 0;
     }
 
