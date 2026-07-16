@@ -432,6 +432,8 @@ class Meal {
         // DONE: return a negative / zero / positive result per the ordering
         // described above.
 
+        if (&a == &b)
+            return 0;
         for (int i{0}; i < nCourses; ++i) {
             int courseIdx = courseSortOrder[i].courseIdx;
             int difference = a.dishFor(courseIdx) - b.dishFor(courseIdx);
@@ -622,10 +624,27 @@ inline int linearSearchForMeal(Meal const *meals, int nMeals,
 inline int binarySearchForMeal(Meal const *sortedMeals, int nSortedMeals,
                                Meal const &target,
                                Course const *courseSortOrder, int nCourses) {
-    // TODO: return the index of a meal equal to target (compare with
+    // DONE: return the index of a meal equal to target (compare with
     // Meal::compareMeals and this
     //       courseSortOrder), or -1 if none. The array is sorted -- search it
     //       in O(log N).
+
+    int left{0};
+    int right{nSortedMeals - 1};
+
+    while (left <= right) {
+        int midpoint{(right + left) / 2};
+        int difference = Meal::compareMeals(sortedMeals[midpoint], target,
+                                            courseSortOrder, nCourses);
+        if (difference < 0) {
+            left = midpoint + 1;
+        } else if (difference > 0) {
+            right = midpoint - 1;
+        } else {
+            return midpoint;
+        }
+    }
+    return -1;
 }
 
 // PROVIDED -- the PRODUCT of two pairing tables: a new factor over the UNION of

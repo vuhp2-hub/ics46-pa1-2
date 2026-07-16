@@ -88,6 +88,12 @@ int main(int argc, char **argv) {
         std::cout << "merge_sort_matches_bubble: "
                   << (mergeMatchesBubble ? "yes" : "no") << "\n";
         delete[] mergeSorted;
+
+        // BINARY search on the sorted array -- O(log N).
+        std::cout << "binary_search_index (sorted): "
+                  << binarySearchForMeal(meals, static_cast<int>(total), target,
+                                         order, n)
+                  << "\n";
     }
 
     delete[] order;
