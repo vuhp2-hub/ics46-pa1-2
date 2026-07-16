@@ -245,7 +245,7 @@ class MenuModel {
     // product of the FREE courses' dish counts (each chosen course contributes
     // x1). Used by completeMeals()/fillCompleteMeals below.
     long long consistentMealCount() const {
-        // TODO: return that count (defined above).
+        // DONE: return that count (defined above).
         long long prod{1};
         for (int i{0}; i < _numCourses; ++i) {
             if (!isChosen(_courses[i].courseIdx)) {
@@ -460,7 +460,7 @@ class Meal {
 // the LAST course's digit first). This decode is what makes
 // model.completeMeals() yield each meal, so YOU write it.
 inline Meal MenuModel::MealIterator::operator*() const {
-    // TODO: build and return the complete meal at position _pos -- each chosen
+    // DONE: build and return the complete meal at position _pos -- each chosen
     // course takes its fixed
     //       dish, and the free courses together encode _pos (a mixed-radix /
     //       odometer decode over the free courses; see the lecture's odometer).
@@ -496,7 +496,7 @@ inline Meal MenuModel::MealIterator::operator*() const {
 // (it allocated it and frees it); this function allocates nothing. Be ready to
 // analyze this function's time and space complexity (Big-O).
 inline void fillCompleteMeals(MenuModel const &model, Meal *meals) {
-    // TODO: fill meals[0 .. model.consistentMealCount()-1] with every complete
+    // DONE: fill meals[0 .. model.consistentMealCount()-1] with every complete
     // meal, by iterating
     //       model.completeMeals(). (The caller already sized the array;
     //       allocate nothing here.)
