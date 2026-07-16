@@ -248,9 +248,11 @@ class MenuModel {
         // DONE: return that count (defined above).
         long long prod{1};
         for (int i{0}; i < _numCourses; ++i) {
-            if (!isChosen(_courses[i].courseIdx)) {
-                prod *= _courses[i].numDishes;
-            }
+            prod *= _courses[i].numDishes;
+        }
+
+        for (int i{0}; i < _numChosen; ++i) {
+            prod /= _courses[_chosen[i].courseIdx].numDishes;
         }
         return prod;
     }
