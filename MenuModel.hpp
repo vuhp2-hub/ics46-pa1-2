@@ -540,42 +540,66 @@ inline void bubbleSortMeals(Meal *mealsToSort, int nMealsToSort,
 inline void mergeMeals(Meal *meals, int lo, int mid, int hi,
                        Course const *courseSortOrder, int nCourses,
                        Meal *scratch) {
-    // TODO: merge the two already-sorted runs meals[lo..mid] and
+    // DONE: merge the two already-sorted runs meals[lo..mid] and
     // meals[mid+1..hi] into one sorted run,
     //       via the scratch buffer. Keep it STABLE (equal meals stay in their
     //       original order) so the result matches bubbleSortMeals.
-    (void)meals;
-    (void)lo;
-    (void)mid;
-    (void)hi;
-    (void)courseSortOrder;
-    (void)nCourses;
-    (void)scratch;
+
+    int leftI{lo};
+    int rightI{mid + 1};
+    int i{lo};
+
+    // looks at both partition equally until they run out of elements
+    while (leftI < mid + 1 && rightI <= hi) {
+        int difference = Meal::compareMeals(meals[leftI], meals[rightI],
+                                            courseSortOrder, nCourses);
+        if (difference > 0) {
+            scratch[i++] = meals[rightI++];
+        } else {
+            scratch[i++] = meals[leftI++];
+        }
+    }
+
+    // add the rest of the left partition
+    // if there is any left
+    while (leftI < mid + 1) {
+        scratch[i++] = meals[leftI++];
+    }
+
+    while (rightI <= hi) {
+        scratch[i++] = meals[rightI++];
+    }
+
+    for (int j{lo}; j < i; ++j) {
+        meals[j] = scratch[j];
+    }
 }
 inline void mergeSortMeals(Meal *meals, int lo, int hi,
                            Course const *courseSortOrder, int nCourses,
                            Meal *scratch) {
-    // TODO: recursively sort meals[lo..hi] -- sort each half, then combine them
+    // DONE: recursively sort meals[lo..hi] -- sort each half, then combine them
     // with mergeMeals.
-    (void)meals;
-    (void)lo;
-    (void)hi;
-    (void)courseSortOrder;
-    (void)nCourses;
-    (void)scratch;
+    if (lo < hi) {
+        mergeSortMeals(meals, lo, (hi + lo) / 2, courseSortOrder, nCourses,
+                       scratch);
+        mergeSortMeals(meals, (hi + lo) / 2 + 1, hi, courseSortOrder, nCourses,
+                       scratch);
+        mergeMeals(meals, lo, (hi + lo) / 2, hi, courseSortOrder, nCourses,
+                   scratch);
+    }
 }
 // Public entry point -- the signature the driver / autograder call (same shape
 // as bubbleSortMeals).
 inline void mergeSortMeals(Meal *meals, int n, Course const *courseSortOrder,
                            int nCourses) {
-    // TODO: sort meals[0..n-1] via the recursive helper above, using ONE
+    // DONE: sort meals[0..n-1] via the recursive helper above, using ONE
     // scratch buffer that you
     //       allocate once and free -- every new[] needs a matching delete[]
     //       (the memory gate checks this).
-    (void)meals;
-    (void)n;
-    (void)courseSortOrder;
-    (void)nCourses;
+
+    Meal *scratch = new Meal[n];
+    mergeSortMeals(meals, 0, n - 1, courseSortOrder, nCourses, scratch);
+    delete[] scratch;
 }
 
 // PROVIDED -- a simple LINEAR search: scan meals in order for the first one
@@ -602,12 +626,6 @@ inline int binarySearchForMeal(Meal const *sortedMeals, int nSortedMeals,
     // Meal::compareMeals and this
     //       courseSortOrder), or -1 if none. The array is sorted -- search it
     //       in O(log N).
-    (void)sortedMeals;
-    (void)nSortedMeals;
-    (void)target;
-    (void)courseSortOrder;
-    (void)nCourses;
-    return -1;
 }
 
 // PROVIDED -- the PRODUCT of two pairing tables: a new factor over the UNION of

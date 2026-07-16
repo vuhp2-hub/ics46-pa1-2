@@ -62,6 +62,7 @@ int main(int argc, char **argv) {
         std::cout << "linear_search_index (unsorted): "
                   << linearSearchForMeal(meals, static_cast<int>(total), target)
                   << "\n";
+
         // MERGE SORT (Unit 2) -- sort a COPY of the still-unsorted meals in O(N
         // log N); the fast counterpart to the O(N^2) bubbleSortMeals below. It
         // should reach the SAME order.
@@ -69,6 +70,24 @@ int main(int argc, char **argv) {
         for (long long i = 0; i < total; ++i)
             mergeSorted[i] = meals[i];
         mergeSortMeals(mergeSorted, static_cast<int>(total), order, n);
+
+        // Now SORT in place with bubble, then BINARY-search the sorted array --
+        // O(log N).
+        bubbleSortMeals(meals, static_cast<int>(total), order, n);
+        std::cout << "sorted_meals (reverse course order):\n";
+        for (long long i = 0; i < total; ++i) {
+            std::cout << "  ";
+            printMeal(meals[i], n);
+            std::cout << "\n";
+        }
+
+        bool mergeMatchesBubble = true;
+        for (long long i = 0; i < total; ++i)
+            if (mergeSorted[i] != meals[i])
+                mergeMatchesBubble = false;
+        std::cout << "merge_sort_matches_bubble: "
+                  << (mergeMatchesBubble ? "yes" : "no") << "\n";
+        delete[] mergeSorted;
     }
 
     delete[] order;
