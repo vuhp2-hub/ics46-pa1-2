@@ -373,22 +373,32 @@ class Meal {
     Meal() : _numCourses(0), _choices(nullptr) {}
 
     explicit Meal(int numCourses) : _numCourses(0), _choices(nullptr) {
-        // TODO: make this meal hold one dish-slot per course (0 ..
+        // DONE: make this meal hold one dish-slot per course (0 ..
         // numCourses-1), with no dish chosen
         //       yet -- use -1 as the "not set" placeholder. (setDish fills the
         //       real dishes in later.)
-        (void)numCourses;
+        _choices = new ChosenCourse[numCourses];
+        for (int i{0}; i < _numCourses; ++i) {
+            _choices[i].courseIdx = i;
+            _choices[i].dish = -1;
+        }
     }
 
     ~Meal() {
-        // TODO: release the memory this meal owns.
+        // DONE: release the memory this meal owns.
+        delete[] _choices;
     }
 
-    Meal(Meal const &other) : _numCourses(0), _choices(nullptr) {
-        // TODO: make this an independent DEEP copy of other (its own memory,
+    Meal(Meal const &other)
+        : _numCourses(other._numCourses),
+          _choices(new ChosenCourse[other._numCourses]) {
+        // DONE: make this an independent DEEP copy of other (its own memory,
         // the same dishes) so the
         //       two meals never share storage.
-        (void)other;
+        for (int i{0}; i < _numCourses; ++i) {
+            _choices[i].courseIdx = other._choices[i].courseIdx;
+            _choices[i].dish = other._choices[i].dish;
+        }
     }
 
     // PROVIDED: swap + the copy-and-swap move/assignment.
@@ -446,8 +456,16 @@ inline Meal MenuModel::MealIterator::operator*() const {
     // course takes its fixed
     //       dish, and the free courses together encode _pos (a mixed-radix /
     //       odometer decode over the free courses; see the lecture's odometer).
-    return Meal(_model->numCourses()); // <-- placeholder; replace with the meal
-                                       // described above
+
+    // Empty Meal with dish placeholders
+    Meal result = Meal(_model->numCourses());
+
+    // Fixing chosen dishes
+    for (int i{0}; i < _model->chosenCount(); ++i) {
+        // int chosenCIdx = _model->chosenCourseAt(i);
+    }
+
+    return result;
 }
 
 // Fill the caller's array `meals` (which must already have length
