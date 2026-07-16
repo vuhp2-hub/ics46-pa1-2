@@ -552,7 +552,7 @@ inline void mergeMeals(Meal *meals, int lo, int mid, int hi,
     int i{lo};
 
     // looks at both partition equally until they run out of elements
-    while (leftI < mid + 1 && rightI <= hi) {
+    while (leftI <= mid && rightI <= hi) {
         int difference = Meal::compareMeals(meals[leftI], meals[rightI],
                                             courseSortOrder, nCourses);
         if (difference > 0) {
