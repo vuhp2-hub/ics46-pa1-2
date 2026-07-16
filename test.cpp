@@ -29,7 +29,23 @@ int main(int argc, char **argv) {
 
     int n = model.numCourses();
     long long total = model.consistentMealCount();
-    std::cout << total << std::endl;
+    std::cout << "courses: " << n << "\n";
+    std::cout << "total_meals (ignoring chosen): " << model.totalMealCount()
+              << "\n";
+    std::cout << "remaining_meals (given chosen): " << total << "\n";
+
+    // Enumerate every complete meal consistent with the chosen courses (we
+    // allocate; fillCompleteMeals fills).
+    Meal *meals = new Meal[total];
+    fillCompleteMeals(model, meals);
+    std::cout << "all_meals (dish per course, in course order):\n";
+    for (long long i = 0; i < total; ++i) {
+        std::cout << "  ";
+        printMeal(meals[i], n);
+        std::cout << "\n";
+    }
+    delete[] meals;
+
     // std::cout << "courses: " << n << "\n";
     // std::cout << "total_meals (ignoring chosen): " << model.totalMealCount()
     //           << "\n";

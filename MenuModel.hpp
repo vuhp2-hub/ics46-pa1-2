@@ -40,6 +40,8 @@
 #ifndef MENU_MODEL_HPP
 #define MENU_MODEL_HPP
 
+#include <algorithm>
+#include <cassert>
 #include <fstream>
 #include <stdexcept>
 #include <string>
@@ -372,7 +374,7 @@ class Meal {
   public:
     Meal() : _numCourses(0), _choices(nullptr) {}
 
-    explicit Meal(int numCourses) : _numCourses(0), _choices(nullptr) {
+    explicit Meal(int numCourses) : _numCourses(numCourses), _choices(nullptr) {
         // DONE: make this meal hold one dish-slot per course (0 ..
         // numCourses-1), with no dish chosen
         //       yet -- use -1 as the "not set" placeholder. (setDish fills the
@@ -458,11 +460,25 @@ inline Meal MenuModel::MealIterator::operator*() const {
     //       odometer decode over the free courses; see the lecture's odometer).
 
     // Empty Meal with dish placeholders
-    Meal result = Meal(_model->numCourses());
+    int numCourses{_model->numCourses()};
+    Meal result = Meal(numCourses);
 
     // Fixing chosen dishes
     for (int i{0}; i < _model->chosenCount(); ++i) {
-        // int chosenCIdx = _model->chosenCourseAt(i);
+        int chosenCIdx = _model->chosenCourseAt(i);
+        int chosenDish = _model->chosenDishAt(i);
+        result.setDish(chosenCIdx, chosenDish);
+    }
+
+    long long remaining{_pos};
+
+    for (int i{numCourses - 1}; i >= 0; --i) {
+        // Excluding already fixed chosen dish
+        if (result.dishFor(i) != -1)
+            continue;
+        int numDishes = _model->dishes(i);
+        result.setDish(i, remaining % numDishes);
+        remaining /= numDishes;
     }
 
     return result;
@@ -478,8 +494,16 @@ inline void fillCompleteMeals(MenuModel const &model, Meal *meals) {
     // meal, by iterating
     //       model.completeMeals(). (The caller already sized the array;
     //       allocate nothing here.)
-    (void)model;
-    (void)meals;
+
+    int consistentMealCount = model.consistentMealCount();
+    MenuModel::CompleteMeals container = model.completeMeals();
+    int count{0};
+    for (Meal meal : container) {
+        meals[count++] = meal;
+    }
+
+    assert(consistentMealCount == count &&
+           "Iterator produced an incorrect number of meals.");
 }
 
 // PROVIDED -- sort meals in place by bubble sort, ordering by
