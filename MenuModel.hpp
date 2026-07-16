@@ -442,10 +442,16 @@ class Meal {
     // uses  a == b  instead of the heavier comparator. (In C++20, defining ==
     // gives != free.)
     bool operator==(Meal const &other) const {
-        // TODO: return whether the two meals pick the same dish on every
+        // DONE: return whether the two meals pick the same dish on every
         // course.
-        (void)other;
-        return false;
+        if (other._numCourses != _numCourses)
+            return false;
+        for (int i{0}; i < _numCourses; ++i) {
+            if (other._choices[i].dish != _choices[i].dish) {
+                return false;
+            }
+        }
+        return true;
     }
 };
 
