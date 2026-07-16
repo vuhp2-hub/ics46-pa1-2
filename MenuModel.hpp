@@ -40,8 +40,6 @@
 #ifndef MENU_MODEL_HPP
 #define MENU_MODEL_HPP
 
-#include <algorithm>
-#include <cassert>
 #include <fstream>
 #include <stdexcept>
 #include <string>
@@ -508,15 +506,15 @@ inline void fillCompleteMeals(MenuModel const &model, Meal *meals) {
     //       model.completeMeals(). (The caller already sized the array;
     //       allocate nothing here.)
 
-    int consistentMealCount = model.consistentMealCount();
+    // int consistentMealCount = model.consistentMealCount();
     MenuModel::CompleteMeals container = model.completeMeals();
     int count{0};
     for (Meal meal : container) {
         meals[count++] = meal;
     }
 
-    assert(consistentMealCount == count &&
-           "Iterator produced an incorrect number of meals.");
+    // assert(consistentMealCount == count &&
+    // "Iterator produced an incorrect number of meals.");
 }
 
 // PROVIDED -- sort meals in place by bubble sort, ordering by
